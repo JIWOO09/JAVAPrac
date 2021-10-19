@@ -5,7 +5,6 @@ import java.util.Scanner;
 //메소드 분리하기
 public class calculatemethod {
 	static Scanner scanner = new Scanner(System.in);
-	private static String symbol;
 	//정적멤버 선언 방법 > 메소드 앞에 static을 앞에 붙이면 된다.
 	//클래스만으로 메소드호출
 	
