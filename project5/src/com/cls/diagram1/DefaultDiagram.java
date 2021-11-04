@@ -1,7 +1,7 @@
 package com.cls.diagram1;
 
-
 	//클래스다이어그램 샘플용 코드
+
 public class DefaultDiagram {
 
 	public int x1;

@@ -2,6 +2,7 @@ package com.cls.diagram3;
 
 import java.util.ArrayList;
 import java.util.List;
+//클래스다이어그램 샘플용 코드
 
 class Grade {
 	private String title;
@@ -36,7 +37,7 @@ class GradeCalc {
 }
 
 public class DependencyClass {
-	// 클래스 다이어그램 의존관계 샘플용.
+	//클래스다이어그램 샘플용 코드
 	public static void main(String[] args) {
 		List<Grade> grades = new ArrayList<Grade>();
 		Grade g1 = new Grade();

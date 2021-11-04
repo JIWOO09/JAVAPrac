@@ -3,6 +3,7 @@ package com.cls.diagram5;
 import java.util.ArrayList;
 import java.util.List;
 
+//클래스다이어그램 샘플용 코드
 class Grade {
 	// 성적 : 특정 과목의 점수를 관리하기 위한 객체
 	private String title;
@@ -46,7 +47,7 @@ class GradeTable {
 
 
 public class AggregationClass {
-	// 클래스 다이어그램 집합관계 샘플용.
+	//클래스다이어그램 샘플용 코드
 		public static void main(String[] args) {
 			List<Grade> grades = new ArrayList<Grade>();
 			

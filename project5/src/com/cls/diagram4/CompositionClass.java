@@ -1,7 +1,9 @@
 package com.cls.diagram4;
+
 import java.util.ArrayList;
 import java.util.List;
 
+//클래스다이어그램 샘플용 코드
 class Grade {
 	private String title;
 	private double grade;
@@ -58,7 +60,7 @@ class GradeCalc {
 }
 
 public class CompositionClass {
-	// 클래스 다이어그램 합성(포함)관계 샘플용.
+	//클래스다이어그램 샘플용 코드
 	public static void main(String[] args) {
 		GradeCalc gc = new GradeCalc("국어", 78);
 		gc.insertGrade("영어", 88);
