@@ -25,6 +25,7 @@ public class OracleCloudConnect {
 			// 사용자 홈 디렉터리 경로를 알아낸다.
 			//info.load(new FileReader(userHome + "/oracle_connection.prop"));
 			//위 방법으로 연결 안되어서 userhome 지우고 나니(주석처리한 코드들) 연결 됨.
+			
 			try {
 				info.load(new FileReader("oracle_connection.prop"));
 				} catch (FileNotFoundException e) { //파일을 찾을 수 없다는 에러가 발생하면 예외처리
