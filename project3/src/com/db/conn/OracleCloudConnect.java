@@ -8,7 +8,7 @@ import oracle.jdbc.OracleConnection;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class OracleCloudConnect {
-								//DB 접송 문자열
+								//DB 접속 문자열
 	private final String DB_URL = "jdbc:oracle:thin:@mydb_medium?TNS_ADMIN=c:\\Users\\HP\\Wallet_myDB";
 	//private final String USERNAME = "USER1";
 	//private final String PASSWORD = "KHpass123456789";
