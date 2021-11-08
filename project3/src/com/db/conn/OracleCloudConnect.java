@@ -39,7 +39,6 @@ public class OracleCloudConnect {
 			}
 	
 	
-	
 	public OracleCloudConnect () throws SQLException {
 		
 		/* JDBC 사용하여 Oracle Database 연결 하기위한 과정
