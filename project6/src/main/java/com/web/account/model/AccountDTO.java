@@ -18,7 +18,8 @@ public class AccountDTO {
 	}
 	
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = username.toLowerCase();
+						//소문자 적용
 	}
 	
 	public String getPassword() {
@@ -26,6 +27,6 @@ public class AccountDTO {
 	}
 	
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = password.toLowerCase();
 	}
 }

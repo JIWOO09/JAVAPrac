@@ -28,9 +28,9 @@ public class OracleCloudConnect {
 			//위 방법으로 연결 안되어서 userhome 지우고 나니(주석처리한 코드들) 연결 됨.
 			
 			try {
-				info.load(new FileReader("oracle_connection2.prop"));
+				info.load(new FileReader("oracle_connection.prop"));
 				} catch (FileNotFoundException e) { //파일을 찾을 수 없다는 에러가 발생하면 예외처리
-					System.out.println("oracle_connection2.prop 파일을 찾을 수 없습니다.");
+					System.out.println("oracle_connection.prop 파일을 찾을 수 없습니다.");
 					System.out.println("기본 연결 계정을 사용합니다.");
 					info.setProperty("user", "user");
 					info.setProperty("password", "password");
