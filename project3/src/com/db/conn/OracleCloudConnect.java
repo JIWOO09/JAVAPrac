@@ -22,13 +22,12 @@ public class OracleCloudConnect {
 	
 		// 초기화 블럭
 		{
-			//String userHome = System.getProperty("user.home");
-			// 사용자 홈 디렉터리 경로를 알아낸다.
-			//info.load(new FileReader(userHome + "/oracle_connection.prop"));
-			//위 방법으로 연결 안되어서 userhome 지우고 나니(주석처리한 코드들) 연결 됨.
-			
+			String userHome = System.getProperty("user.home");
+			// 사용자 홈 디렉터리 경로를 알아낸다. -> c드라이브 -> 사용자 -> HP
 			try {
-				info.load(new FileReader("oracle_connection.prop"));
+				info.load(new FileReader(userHome + "/oracle_connection.prop"));
+		//info.load(new FileReader("oracle_connect.prop")); 이건 해당 프로젝트 파일안에 있을 때
+				
 				} catch (FileNotFoundException e) { //파일을 찾을 수 없다는 에러가 발생하면 예외처리
 					System.out.println("oracle_connection.prop 파일을 찾을 수 없습니다.");
 					System.out.println("기본 연결 계정을 사용합니다.");
