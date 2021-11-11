@@ -1,6 +1,7 @@
 package com.web.guestbook.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,16 +10,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.web.guestbook.model.GuestBookDTO;
-import com.web.guestbook.model.GuestBookService;
+import com.web.guestbook.model.*;
 
 @WebServlet("/guest")
 public class GuestBookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
 
 	//페이지 전달 + 방명록 조회 목록
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
+		
+		GuestBookService service = new GuestBookService();
+						//조회한 테이블 내용이 담긴다.
+		request.setAttribute("datas", service.getList()); //view에 전달
+		
+		
+		
 		String view = "/WEB-INF/jsp/guestbook/index.jsp";
 		RequestDispatcher rd = request.getRequestDispatcher(view);
 		rd.forward(request, response);
@@ -52,8 +60,7 @@ public class GuestBookController extends HttpServlet {
 		//System.out.println(context);
 		//System.out.println("IP주소 : " + ipaddr);
 		
-		
-		response.getWriter().write(context);
+	
 	}
 
 }

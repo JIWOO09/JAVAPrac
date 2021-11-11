@@ -1,6 +1,10 @@
 package com.web.guestbook.model;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jspweb.dbconn.OracleCloudConnect;
 
 
@@ -12,6 +16,25 @@ public class GuestBookDAO {
 	public GuestBookDAO() throws SQLException {
         this.occ = new OracleCloudConnect();
         this.occ.connection();
+	}
+	
+	public List<GuestBookDTO> select() throws SQLException{
+		List<GuestBookDTO> datas = new ArrayList<GuestBookDTO>();
+		
+		String query = "SELECT * FROM GUESTBOOK ORDER BY G_DATE DESC";
+		ResultSet res = occ.sendQuery(query);
+		
+		while(res.next()) {
+			GuestBookDTO dto = new GuestBookDTO();
+			dto.setId(res.getInt("g_id")); //인덱스 또는 컬럼명으로 지정
+			dto.setIpaddr(res.getString("g_ipaddr"));
+			dto.setContext(res.getString("g_context"));
+			dto.setDate(res.getDate("g_date"));
+			datas.add(dto);
+		}
+		res.close();
+		occ.close();
+		return datas;
 	}
 	
 	public boolean insert(GuestBookDTO dto) throws SQLException {
