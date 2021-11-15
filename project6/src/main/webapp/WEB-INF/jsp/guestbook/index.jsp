@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>방명록</title>
+ <script type="text/javascript" src="/static/js/guestScript.js"></script>
 </head>
 <body>
     <header>
@@ -35,19 +36,27 @@
                     <tr>
                         <th>번호</th>
                         <th>IP주소</th>
-                        <th>내용</th>
+                        <th colspan="2">내용</th>
                         <th>날짜</th>
                     </tr>
                 </thead>
                 <tbody>
                     <%
-                        List<GuestBookDTO> datas = (List<GuestBookDTO>) request.getAttribute("datas");
+                        List<GuestBookDTO> datas =
+                            (List<GuestBookDTO>) request.getAttribute("datas");
                         for(GuestBookDTO data: datas) {
                     %>
                         <tr>
                             <td><%=data.getId() %></td>
                             <td><%=data.getIpaddr() %></td>
                             <td><%=data.getContext() %></td>
+                            <td>
+                                <button onclick="guestModify(this.parentElement);">수정</button>
+                                <form action = "./guest/delete" method ="post">
+                                	<input type="hidden" name ="id" value ="<%=data.getId() %>">
+                                <button type="submit">삭제</button>
+                                </form>
+                            </td>
                             <td><%=data.getDate() %></td>
                         </tr>
                     <%
