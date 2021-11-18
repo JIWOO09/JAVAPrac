@@ -3,25 +3,13 @@ package com.web.join.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.jspweb.dbconn.OracleCloudConnect;
+import com.jspweb.dbconn.OracleCRUD;
 
 
-public class JoinDAO {
 
-	OracleCloudConnect occ;
+public class JoinDAO extends OracleCRUD {
+
 	
-	public JoinDAO() {
-		try {
-			this.occ = new OracleCloudConnect();
-			this.occ.connection();
-		
-		} catch (SQLException e) {
-			e.printStackTrace(); //에러메세지 출력
-			System.out.println("JoinDAO 생성자 동작에 에러 발생");
-			
-		}
-		
-	}
 	
 	public JoinDTO select(String username) {
 		String query = "SELECT * FROM MEMBERS"
