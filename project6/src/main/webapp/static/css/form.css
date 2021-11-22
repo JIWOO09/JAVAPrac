@@ -1,0 +1,32 @@
+[class*=-form] {
+    margin-bottom: 4px;
+}
+
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.inline-form * {
+    margin-right: 2px;
+}
+
+.inline-form *:last-child {
+    margin-right: 0;
+}
+
+.inline-form .col-1 {
+    flex-basis: calc(100% / 12);
+}
+
+.inline-form .col-2 {
+    flex-basis: calc((100% / 12) * 2);
+}
+
+.inline-form .col-auto {
+    flex-grow: 1;
+}
+
+.right-form {
+    text-align: right;
+}
