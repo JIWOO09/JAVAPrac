@@ -1,43 +1,58 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import = "java.util.*" %>
-    
-<%!
-	private int num = 10;
-	private Random rand = new Random();
-%>    
+       
 <!DOCTYPE html>
 <html>
 <head lang = "ko">
 <meta charset="UTF-8">
-<title>First JSP</title>
+<title>메인 화면</title>
 </head>
+
+<% 
+	Cookie[] cookie = request.getCookies();
+	boolean logined = false;
+	String username = "";
+	
+	for(Cookie c: cookie) {
+		if(c.getName().equals("login_name")) {
+			logined = true;
+			username = c.getValue();
+		}
+	}
+
+
+
+%>
 <body>
-	<%-- <%@ include file = "이 위치에 포함 시킬 JSP 페이지 경로(URL, 상대경로) 작성" %>--%>
-	<%@ include file ="/module/header.jsp" %>
-	<p>
-		<%-- 스크립트 태그 표현식 입니다.
-		<%=num %> --%>
-		<%= rand.nextInt(10) %>
-	</p> 
-	<p>
-		<%
-		//스크립트 안의 주석은 기본 자바 주석
-			if(rand.nextInt(10) % 2 == 0) {
-				out.print("짝수입니다.");
-			} else {
-				out.print("홀수입니다.");
-			}
-		
-		%>
-	</p>
-	<%-- JSP로 1~9까지의 목록 만들기 --%> 
-	<%-- 쌍 잘 맞추기 잘못하면 에러남. --%>
 	<ul>
-	<% for(int i = 1; i <= 9; i++) { %>
-		<li><%=i %></li>
+		<li><a href="/guest">방명록</a></li>
+		
+			<!-- 로그인 상태가 맞는 경우 -->
+		<% 
+			if(logined) {
+		%>
+			<li><a href="/info">내정보</a></li>
+			<li><a href="/logout">로그아웃</a></li>
+		<% } else { %>
+			<!-- 로그인 상태가 아닌 경우 -->
+			<li><a href="/join">회원가입</a></li>
+			<li><a href="/login">로그인</a></li>
 		<% } %>
 	</ul>
-	
+		<%
+			if(logined) {
+		%>
+			<h1>Cookie -> <%=username %> 님 환영합니다.</h1>
+		<%
+			}
+		%>
+		
+		<%
+			if(session.getAttribute("login_name") != null) {
+		%>
+			<h1>Session -> <%=(String)session.getAttribute("login_name") %>님 환영합니다.</h1>
+		<% 
+			}
+		%>
 </body>
 </html>
