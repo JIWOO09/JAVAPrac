@@ -27,7 +27,7 @@ public class BoardController extends HttpServlet {
 		List<BoardDTO> datas = service.getList();
 		List<BoardCategoryDTO> category = service.getCategory();
 		
-		request.setAttribute("type", type);
+		//request.setAttribute("type", type); JSP에서 param써서 주석처리
 		request.setAttribute("datas", datas);
 		
 		//카테고리 조회 결과 request에 담아서 보내주기
