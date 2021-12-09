@@ -60,7 +60,7 @@ public class JoinService {
     	return -1;
     }
     
-    private boolean isExisted() {
+    public boolean isExisted() {
     	JoinDAO dao = new JoinDAO();
     	int res = dao.countAccount(this.dto);
     	dao.close();
