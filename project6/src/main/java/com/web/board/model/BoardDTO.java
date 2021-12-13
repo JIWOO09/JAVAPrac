@@ -2,6 +2,8 @@ package com.web.board.model;
 
 
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class BoardDTO {
 	private int id;
@@ -13,13 +15,41 @@ public class BoardDTO {
 	private int viewCount;
 	private int goodCount;
 	private int badCount;
+	private int cid;
 	
+	public BoardDTO() {}
+	
+	public BoardDTO(int id) {
+		this.id = id;
+	}
+	
+	public BoardDTO(String title) {
+		this.title = title;
+		this.content = " ";
+	}
+	
+	public BoardDTO(String id, String title) {
+		this.id = Integer.parseInt(id);
+		this.title = title;
+		this.content = " ";
+	}
+	
+	public BoardDTO(String bid, String title, String content) {
+		this.id = Integer.parseInt(bid);
+		this.title = title;
+		this.content = content;
+	}
+
 	public int getId() {
 		return id;
 	}
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public void setId(String id) {
+		this.id = Integer.parseInt(id);
 	}
 	
 	public String getTitle() {
@@ -84,5 +114,30 @@ public class BoardDTO {
 	
 	public void setBadCount(int badCount) {
 		this.badCount = badCount;
+	}
+
+	public void setCid(String type) {
+		this.cid = Integer.parseInt(type);
+	}
+	
+	public void setCid(int type) {
+		this.cid = type;
+	}
+	
+	public int getCid() {
+		return this.cid;
+	}
+	
+	public void setResultSet(ResultSet rs) throws SQLException {
+		this.id = rs.getInt("ID");
+		this.cid = rs.getInt("CID");
+		this.title = rs.getString("TITLE");
+		this.writer = rs.getString("WRITER");
+		this.content = rs.getString("CONTENT");
+		this.createDate = rs.getDate("CREATE_DATE");
+		this.updateDate = rs.getDate("UPDATE_DATE");
+		this.viewCount = rs.getInt("VIEW_COUNT");
+		this.goodCount = rs.getInt("GOOD_COUNT");
+		this.badCount = rs.getInt("BAD_COUNT");
 	}
 }

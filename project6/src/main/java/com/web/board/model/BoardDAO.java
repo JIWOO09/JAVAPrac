@@ -17,23 +17,95 @@ public class BoardDAO {
 		this.occ = new OracleCloudConnect(true);
 	}
 	
+	public int insert(BoardDTO dto) {
+		int res = 0;
+		String query = "INSERT INTO BOARDS VALUES("
+				+ "?, 1, ?, 'user1', ?, "
+				+ "SYSDATE, SYSDATE, 0, 0, 0)";
+		PreparedStatement ps = occ.getPstat(query);
+		try {
+			ps.setInt(1, dto.getId());
+			ps.setString(2, dto.getTitle());
+			ps.setString(3, dto.getContent());
+			res = occ.insert(ps);
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+	
+	public int update(BoardDTO dto) {
+		int res = 0;
+		String query = "UPDATE BOARDS SET"
+				+ " TITLE = ?,"
+				+ " CONTENT = ?"
+				+ " WHERE ID = ?";
+		PreparedStatement ps = occ.getPstat(query);
+		try {
+			ps.setString(1, dto.getTitle());
+			ps.setString(2, dto.getContent());
+			ps.setInt(3, dto.getId());
+			res = occ.update(ps);
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
 	public List<BoardDTO> select() {
 		List<BoardDTO> datas = new ArrayList<BoardDTO>();
-		String query = "SELECT * FROM BOARDS ORDER BY CREATE_DATE, ID";
+		String query = "SELECT * FROM BOARDS ORDER BY CREATE_DATE DESC, ID DESC";
 		try {
 			PreparedStatement st = occ.getPstat(query);
 			ResultSet rs = occ.select(st);
 			while(rs.next()) {
 				BoardDTO data = new BoardDTO();
-				data.setId(rs.getInt("ID"));
-				data.setTitle(rs.getString("TITLE"));
-				data.setWriter(rs.getString("WRITER"));
-				data.setContent(rs.getString("CONTENT"));
-				data.setCreateDate(rs.getDate("CREATE_DATE"));
-				data.setUpdateDate(rs.getDate("UPDATE_DATE"));
-				data.setViewCount(rs.getInt("VIEW_COUNT"));
-				data.setGoodCount(rs.getInt("GOOD_COUNT"));
-				data.setBadCount(rs.getInt("BAD_COUNT"));
+				data.setResultSet(rs);
+				datas.add(data);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return datas;
+	}
+
+	public BoardDTO selectOne(BoardDTO dto) {
+		BoardDTO data = null;
+		String query = "SELECT * FROM BOARDS WHERE ID = ?";
+		try {
+			PreparedStatement st = occ.getPstat(query);
+			st.setInt(1, dto.getId());
+			
+			ResultSet rs = occ.select(st);
+			if(rs.next()) {
+				data = new BoardDTO();
+				data.setResultSet(rs);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return data;
+	}
+	
+	public List<BoardDTO> selectCategoryType(int type) {
+		List<BoardDTO> datas = new ArrayList<BoardDTO>();
+		String query = "SELECT * FROM BOARDS"
+				+ " WHERE CID = ?"
+				+ " ORDER BY CREATE_DATE DESC, ID DESC";
+		try {
+			PreparedStatement st = occ.getPstat(query);
+			st.setInt(1, type);
+			ResultSet rs = occ.select(st);
+			while(rs.next()) {
+				BoardDTO data = new BoardDTO();
+				data.setResultSet(rs);
 				datas.add(data);
 			}
 			rs.close();
@@ -47,10 +119,7 @@ public class BoardDAO {
 	
 	public List<BoardCategoryDTO> selectCategory() {
 		List<BoardCategoryDTO> datas = null;
-		
-		//조회
 		String query = "SELECT * FROM BOARDS_CAT";
-		//쿼리 담을 ps 변수선언
 		PreparedStatement ps = occ.getPstat(query);
 		try {
 			ResultSet rs = ps.executeQuery();
@@ -70,6 +139,24 @@ public class BoardDAO {
 		return datas;
 	}
 	
+	public int getSeq() {
+		int res = 0;
+		String query = "SELECT BOARDS_SEQ.NEXTVAL FROM DUAL";
+		PreparedStatement ps = occ.getPstat(query);
+		ResultSet rs = occ.select(ps);
+		try {
+			if(rs.next()) {
+				res = rs.getInt(1);
+			}
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
 	public void commit() {
 		occ.commit();
 	}
@@ -81,5 +168,6 @@ public class BoardDAO {
 	public void close() {
 		occ.close();
 	}
+
 
 }

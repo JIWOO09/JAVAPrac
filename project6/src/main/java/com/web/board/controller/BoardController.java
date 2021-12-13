@@ -22,9 +22,24 @@ public class BoardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String type = request.getParameter("type");
+		String search = request.getParameter("search");
+		//검색 기능 추가하기
 		
 		BoardService service = new BoardService();
-		List<BoardDTO> datas = service.getList();
+		List<BoardDTO> datas = null;
+		if(type == null && search == null) {
+			datas = service.getList();
+		} else {
+			BoardDTO dto = new BoardDTO();
+			if(type != null) {
+				dto.setCid(type);
+			}
+			if(search != null) {
+				dto.setTitle(search);
+			}
+			datas = service.getList(dto);
+		}
+	
 		List<BoardCategoryDTO> category = service.getCategory();
 		
 		//request.setAttribute("type", type); JSP에서 param써서 주석처리
