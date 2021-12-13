@@ -3,12 +3,18 @@ package com.web.account.model;
 import com.jspweb.dbconn.*;
 import java.sql.*;
 
+import org.apache.ibatis.session.SqlSession;
+
 public class JoinDAO {
     private OracleCloudConnect occ = null;
+    private MybatisConnect mc = null;
+    private SqlSession sess = null;
     private final String DB = "ACCOUNTS";
     
     public JoinDAO() {
         this.occ = new OracleCloudConnect(true);
+        this.mc = new MybatisConnect();
+        this.sess = mc.getSession();
     }
     
     // 테이블에 데이터 추가
@@ -35,6 +41,7 @@ public class JoinDAO {
     
     // 테이블에서 데이터 검색(계정명으로)
     public JoinDTO findAccount(String username) {
+    	
     	JoinDTO res = null;
     	
     	String query = "SELECT * FROM " + DB
@@ -61,30 +68,35 @@ public class JoinDAO {
     
     // 테이블에서 데이터 검색(식별값으로)
     public JoinDTO findAccount(int id) {
-    	JoinDTO res = null;
+    	JoinDTO data = this.sess.selectOne("AccountMapper.selectAccount", id);//맵핑 정보 넣기
     	
-    	String query = "SELECT * FROM " + DB
-    			+ " WHERE ID = ?";
+    	return data;
     	
-    	PreparedStatement st = occ.getPstat(query);
-    	try {
-    		st.setInt(1, id);
-    		ResultSet rs = occ.select(st);
-			if(rs.next()) {
-				res = new JoinDTO();
-				res.setId(rs.getInt("ID"));
-				res.setUsername(rs.getString("USERNAME"));
-				res.setPassword(rs.getString("PASSWORD"));
-			}
-			rs.close();
-			st.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	
-    	
-    	return res;
     }
+//    	JoinDTO res = null;
+//    	
+//    	String query = "SELECT * FROM " + DB
+//    			+ " WHERE ID = ?";
+//    	
+//    	PreparedStatement st = occ.getPstat(query);
+//    	try {
+//    		st.setInt(1, id);
+//    		ResultSet rs = occ.select(st);
+//			if(rs.next()) {
+//				res = new JoinDTO();
+//				res.setId(rs.getInt("ID"));
+//				res.setUsername(rs.getString("USERNAME"));
+//				res.setPassword(rs.getString("PASSWORD"));
+//			}
+//			rs.close();
+//			st.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//    	
+//    	
+//    	return res;
+    
     
     public int countAccount(JoinDTO dto) {
     	int res = 0;
@@ -173,14 +185,17 @@ public class JoinDAO {
     
     public void commit() {
     	occ.commit();
+    	mc.commit();
     }
     
     public void rollback() {
     	occ.rollback();
+    	mc.rollback();
     }
     
     public void close() {
     	occ.close();
+    	mc.close();
     }
 
 }

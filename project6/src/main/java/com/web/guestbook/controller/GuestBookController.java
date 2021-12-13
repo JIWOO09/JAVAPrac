@@ -37,7 +37,8 @@ public class GuestBookController extends HttpServlet {
 	//저장 처리와 관련 된
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8"); // 요청하는거
+		// 요청하는거
+		//request.setCharacterEncoding("utf-8"); 필터 만들었으니까 주석처리
 		//response.setContentType("text/html; charset=utf-8"); //응답하는거
 		
 		String id = request.getParameter("id");

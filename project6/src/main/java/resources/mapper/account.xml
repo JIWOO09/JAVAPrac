@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccountMapper">
+  <resultMap id="accountMap" type="account">
+  	<id property="id" column="id" />
+  	<result property="username" column="username" />
+  	<result property="password" column="password" />
+  	<result property="email" column="email" />
+  	<result property="joinDate" column="joindate" />
+  	<result property="loginDate" column="logindate" />
+  </resultMap>
+  <select id="selectAccount" resultMap="accountMap">
+    SELECT id as "id"
+         , username as "username"
+         , password as "password"
+         , email as "email"
+         , joindate as "joindate"
+         , logindate as "logindate" FROM ACCOUNTS WHERE ID = #{id}
+  </select>
+  <insert id="insertAccount">
+  	INSERT ...
+  </insert>
+  <update id="updateAccount">
+  	UPDATE ...
+  </update>
+  <update id="passwordChage">
+  	UPDATE ...
+  </update>
+  <update id="activateAccount">
+  	UPDATE ...
+  </update>
+  <delete id="deleteAccount">
+  	DELETE ...
+  </delete>
+</mapper>
