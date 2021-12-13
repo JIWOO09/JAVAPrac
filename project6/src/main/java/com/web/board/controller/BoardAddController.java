@@ -27,7 +27,7 @@ public class BoardAddController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		 //request.setCharacterEncoding("utf-8"); 필터 만들었으니까 주석처리
 		String bid = request.getParameter("bid");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");

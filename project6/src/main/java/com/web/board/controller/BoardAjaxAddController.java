@@ -22,7 +22,7 @@ public class BoardAjaxAddController extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		 //request.setCharacterEncoding("utf-8"); 필터 만들었으니까 모든 요청 주석처리
 		response.setContentType("application/json; charset=utf-8");
 		
 		String bid = request.getParameter("bid");
