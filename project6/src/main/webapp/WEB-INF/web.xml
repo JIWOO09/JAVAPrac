@@ -31,7 +31,9 @@
    <filter-mapping>
   	<filter-name>LoginFilter</filter-name>
   		<url-pattern>/info/*</url-pattern>
-  		<url-pattern>/board/*</url-pattern>
+  		<url-pattern>/board/add</url-pattern>
+  		<url-pattern>/board/update</url-pattern>
+  		<url-pattern>/board/delete</url-pattern>
   		<url-pattern>/comment/*</url-pattern>
   </filter-mapping>
 </web-app>  
