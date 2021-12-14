@@ -22,6 +22,14 @@ public class MainController extends HttpServlet {
 			throws ServletException, IOException {
 		request.getRequestDispatcher(view).forward(request, response);
 		
-		
+//		JoinDAO dao = new JoinDAO();
+//		JoinDTO data = new JoinDTO();
+//		System.out.println("id : " + data.getId());
+//		System.out.println("username : " + data.getUsername());
+//		System.out.println("password : " + data.getPassword());
+//		System.out.println("email : " + data.getEmail());
+//		System.out.println("joindate : " + data.getJoinDate());
+//		System.out.println("logindate : " + data.getLoginDate());
+//		dao.close();
 	}
 }

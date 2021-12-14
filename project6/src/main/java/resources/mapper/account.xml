@@ -17,21 +17,44 @@
          , password as "password"
          , email as "email"
          , joindate as "joindate"
-         , logindate as "logindate" FROM ACCOUNTS WHERE ID = #{id}
+         , logindate as "logindate" 
+         FROM ACCOUNTS 
+         WHERE ID = #{id}
   </select>
-  <insert id="insertAccount">
-  	INSERT ...
+  <select id="selectAccountUsername" parameterType="String" resultMap="accountMap">
+  	SELECT id as "id"
+         , username as "username"
+         , password as "password"
+         , email as "email"
+         , joindate as "joindate"
+         , logindate as "logindate" 
+         FROM ACCOUNTS 
+         WHERE USERNAME = #{username}
+  </select> 
+  <select id="selectAccountCount" parameterType="String" resultType="_int">
+  	    SELECT COUNT(*) FROM ACCOUNTS 
+         WHERE USERNAME = #{username}
+  </select>
+  <insert id="insertAccount" parameterType="accountMap">
+  	INSERT INTO ACCOUNTS VALUES(
+  				ACCOUNTS_SEQ.NEXTVAL
+  				,#{username} ,#{password} ,#{email} 
+  				, SYSDATE, SYSDATE)
   </insert>
-  <update id="updateAccount">
-  	UPDATE ...
+  <update id="updateAccount" parameterType="account">
+  	UPDATE ACCOUNTS SET
+  			PASSWORD = #{password}
+  			, EMAIL =#{email}
+  		WHERE ID = #{id}
   </update>
-  <update id="passwordChage">
-  	UPDATE ...
+  <update id="passwordChage" parameterType="account">
+  	UPDATE ACCOUNTS SET
+  			LOGINDATE = SYSDATE
+  		WHERE USERNAME = #{username}
   </update>
-  <update id="activateAccount">
-  	UPDATE ...
-  </update>
-  <delete id="deleteAccount">
-  	DELETE ...
+   <delete id="deleteAccount" parameterType="account">
+  	DELETE FROM ACCOUNTS
+  	 WHERE USERNAME = #{username}
+  	   AND ID = #{id}
   </delete>
 </mapper>
