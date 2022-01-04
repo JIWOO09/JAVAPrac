@@ -17,23 +17,41 @@ public class NoticeService {
 	private String uid = "NEWJDBC";
 	private String pwd = "1234";
 	private String driver = "oracle.jdbc.driver.OracleDriver";
-	//목록 반환 구조 만들기
-	public List<Notice> getList() throws ClassNotFoundException, SQLException{
-								//예외 던지기
-		String sql = "SELECT * FROM NOTICE"; //테이블 조회
+	
+	//목록 반환 구조 만들기                     //검색을 위한
+	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException{
+								        //예외 던지기
+		//String sql = "SELECT * FROM NOTICE"; //테이블 조회
 		
+		int start = 1 + (page-1)*10; //1, 11, 21, 31...
+		int end = 10 * page; //10, 20, 30 ...
+		
+		//10개씩 
+		String sql = "SELECT * FROM NOTICEVIEW WHERE "+field+" LIKE ? AND NUM BETWEEN ? AND ?";
+				
+//				"SELECT * FROM (" 
+//				+ " SELECT ROWNUM NUM, N.* FROM (" 
+//				+ " SELECT * FROM NOTICE ORDER BY WRITER_ID"
+//				+ " ) N "
+//				+ " ) "
+//				+ " WHERE NUM BETWEEN ? AND ?";
 
 		//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
 		Class.forName(driver);
 		//첫번째 로드 객체 생성
 		//메모리상에 드라이버가 올라감
-		Connection con = DriverManager.getConnection(url,"uid","pwd");
+		Connection con = DriverManager.getConnection(url,uid,pwd);
 		//두번째 연결 객체 생성
 		//연결 되면 객체 참조
-		Statement st = con.createStatement();
+		PreparedStatement pst = con.prepareStatement(sql); 
+		pst.setString(1, "%"+query+"%");
+		pst.setInt(2, start);
+		pst.setInt(3, end);
+		
+		//Statement st = con.createStatement();
 		//con으로 이어 받아 세번째 실행 객체 생성
 		//사용자로부터 요구 받은 쿼리 실행
-		ResultSet rs = st.executeQuery(sql);
+		ResultSet rs = pst.executeQuery();
 		//st으로 이어 받아 네번째 결과 받는 객체 생성
 		//레코드 단위로 하나씩 받을 수 있음
 		
@@ -69,13 +87,45 @@ public class NoticeService {
 		}
 		//자원 끊을때는 반대로 실행
 		rs.close();
-		st.close();
+		pst.close();
 		con.close();
 
 		return list;
 	} 
-
 	
+	//갯수 얻을 수 있는 메소드
+	//단일값 = Scalar
+	public int getCount() throws ClassNotFoundException, SQLException {
+		int count = 0;
+		String sql = "SELECT COUNT(ID) COUNT FROM NOTICE ";
+
+		//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
+		Class.forName(driver);
+		//첫번째 로드 객체 생성
+		//메모리상에 드라이버가 올라감
+		Connection con = DriverManager.getConnection(url,uid,pwd);
+		//두번째 연결 객체 생성
+		//연결 되면 객체 참조
+		Statement st = con.createStatement();
+		//con으로 이어 받아 세번째 실행 객체 생성
+		//사용자로부터 요구 받은 쿼리 실행
+		ResultSet rs = st.executeQuery(sql);
+		//st으로 이어 받아 네번째 결과 받는 객체 생성
+		//레코드 단위로 하나씩 받을 수 있음
+		
+		
+		if(rs.next())	// 집합값이 있으면 다음
+			count = rs.getInt("COUNT"); //게시글 총갯수 주세요
+			
+			//자원 끊을때는 반대로 실행
+			rs.close();
+			st.close();
+			con.close();
+	
+			return count; //값이 없으면 기본값 반환
+		}
+		
+
 	//3가지 함수 생성 반환은 int형
 	public int insert (Notice notice) throws SQLException, ClassNotFoundException {
 										//예외던지기
@@ -97,7 +147,7 @@ public class NoticeService {
 		Class.forName(driver);
 		//첫번째 로드 객체 생성
 		//메모리상에 드라이버가 올라감
-		Connection con = DriverManager.getConnection(url,"uid","pwd");
+		Connection con = DriverManager.getConnection(url,uid,pwd);
 		//두번째 연결 객체 생성
 		//연결 되면 객체 참조
 		
@@ -149,7 +199,7 @@ public class NoticeService {
 		Class.forName(driver);
 		//첫번째 로드 객체 생성
 		//메모리상에 드라이버가 올라감
-		Connection con = DriverManager.getConnection(url,"uid","pwd");
+		Connection con = DriverManager.getConnection(url,uid,pwd);
 		//두번째 연결 객체 생성
 		//연결 되면 객체 참조
 		
@@ -191,7 +241,7 @@ public class NoticeService {
 		Class.forName(driver);
 		//첫번째 로드 객체 생성
 		//메모리상에 드라이버가 올라감
-		Connection con = DriverManager.getConnection(url,"uid","pwd");
+		Connection con = DriverManager.getConnection(url,uid,pwd);
 		//두번째 연결 객체 생성
 		//연결 되면 객체 참조
 		
@@ -220,4 +270,6 @@ public class NoticeService {
 		
 		return result;
 	}
+
+	
 }
