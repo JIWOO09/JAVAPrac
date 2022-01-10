@@ -25,6 +25,7 @@ public class Caculate2 extends HttpServlet {
 		//세션 객체 만들고 변수화하기
 		HttpSession session = request.getSession();
 		
+		//쿠키
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
@@ -54,6 +55,8 @@ public class Caculate2 extends HttpServlet {
 		} else {
 			//=이 나오기 전까지 입력한 값 저장하기
 				//맵컬랙션, 키와 값 | 저장소에 값 담기
+		//application.session.setAttribute("value", v);
+		//application.session.setAttribute("op", op);
 		session.setAttribute("value", v);
 		session.setAttribute("op", op);
 		
