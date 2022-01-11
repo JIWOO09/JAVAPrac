@@ -82,8 +82,14 @@ public class Caculate2 extends HttpServlet {
 		//쿠키 심기 								문자열이여야한다.
 		Cookie valueCookie = new Cookie("value", String.valueOf(v));
 		Cookie opCookie = new Cookie("op",op);
-		valueCookie.setPath("/"); //모든 URL의 쿠키
-		opCookie.setPath("/"); //모든 URL의 쿠키
+		
+		//valueCookie.setPath("/"); //모든 URL의 쿠키
+		//opCookie.setPath("/");
+		
+		valueCookie.setPath("/calc2"); // 특정 URL의 쿠키만
+		valueCookie.setMaxAge(24*60*60);//쿠키만료 날짜설정
+		
+		opCookie.setPath("/calc2"); 
 		
 		//클라이언트에게 보내기 -> 브라우저 저장
 		response.addCookie(valueCookie);
