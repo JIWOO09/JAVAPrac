@@ -69,7 +69,11 @@ public class Caculate3 extends HttpServlet {
 		if(operator != null && operator.equals("C"))
 		expCookie.setMaxAge(0);//쿠키 바로 소멸
 		
+		
+		expCookie.setPath("/calc3");//해당 url만 쿠키 전달 path는 하나만 설정가능
+		
 		response.addCookie(expCookie);
+	
 		//페이지 전환 
 		response.sendRedirect("calcpage");
 		}
