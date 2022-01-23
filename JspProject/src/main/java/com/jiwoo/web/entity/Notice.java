@@ -84,7 +84,7 @@ public class Notice {
 		this.content = content;
 	}
 
-	//값 출력
+	//값 출력하여 확인 가능
 	@Override
 	public String toString() {
 		return "Notice [id=" + id + ", title=" + title + ", regdate=" + regdate + ", writerid=" + writerid + ", hit="
