@@ -76,7 +76,6 @@ public class NoticeDetailController extends HttpServlet {
 //			request.setAttribute("files", files);
 //			request.setAttribute("content", content);
 			
-			
 		 	rs.close();
 		 	st.close();
 		 	con.close();
