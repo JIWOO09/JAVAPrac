@@ -83,7 +83,7 @@ public class NoticeListController extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		//forward : 작업 이어 받아 화면단과 공유하기
-		request.getRequestDispatcher("/notice/list.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/notice/list.jsp").forward(request, response);
 	}
 
 }

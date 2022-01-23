@@ -89,7 +89,7 @@ public class NoticeDetailController extends HttpServlet {
 	
 		
 		//forward : 작업 이어 받아 화면단과 공유하기
-		request.getRequestDispatcher("/notice/detail.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/notice/detail.jsp").forward(request, response);
 	
 	}
 
