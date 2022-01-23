@@ -150,26 +150,26 @@
 						<table class="table">
 							<tbody>
 								<tr>
-									<th>제목</th>															<!--controller에서 담은 변수들 꺼내쓰기  -->
-									<td class="text-align-left text-indent text-strong text-orange" colspan="3"><%=request.getAttribute("title")%></td>
+									<th>제목</th>															<!--controller에서 객체 꺼내쓰기  -->
+									<td class="text-align-left text-indent text-strong text-orange" colspan="3">${n.title }</td>
 								</tr>
 								<tr>
 									<th>작성일</th>
-									<td class="text-align-left text-indent" colspan="3"><%=request.getAttribute("regdate") %></td>
+									<td class="text-align-left text-indent" colspan="3">${n.regdate}</td>
 								</tr>
 								<tr>
 									<th>작성자</th>
-									<td><%=request.getAttribute("writerid") %></td>
+									<td>${n.writerid}</td>
 									<th>조회수</th>
-									<td><%=request.getAttribute("hit") %></td>
-						
+									<td>${n.hit}</td>
+	
 								</tr>
 								<tr>
 									<th>첨부파일</th>
-									<td colspan="3"><%=request.getAttribute("files") %></td>
+									<td colspan="3">${n.files}</td>
 								</tr>
 								<tr class="content">
-									<td colspan="4"><%=request.getAttribute("content") %></td>
+									<td colspan="4">${n.content}</td>
 								</tr>
 							</tbody>
 						</table>

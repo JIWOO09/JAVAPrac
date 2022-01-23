@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jiwoo.web.entity.Notice;
+
 
 @WebServlet("/notice/detail")
 public class NoticeDetailController extends HttpServlet {
@@ -54,15 +56,27 @@ public class NoticeDetailController extends HttpServlet {
 			String files = rs.getString("FILES");
 			String content = rs.getString("CONTENT");
 			
-			//만든 변수들의 저장소(데이터 담기)
-			request.setAttribute("title", title);
-			request.setAttribute("regdate", regdate);
-			request.setAttribute("writerid ",  writerid );
-			request.setAttribute("hit", hit);
-			request.setAttribute("files", files);
-			request.setAttribute("content", content);
+			//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
+			Notice notice = new Notice(
+								id,
+								title,
+								regdate,
+								writerid,
+								hit,
+								files,
+								content
+								);
+			request.setAttribute("n", notice);
 			
-		 
+			//만든 변수들의 저장소(데이터 담기)
+//			request.setAttribute("title", title);
+//			request.setAttribute("regdate", regdate);
+//			request.setAttribute("writerid ",  writerid );
+//			request.setAttribute("hit", hit);
+//			request.setAttribute("files", files);
+//			request.setAttribute("content", content);
+			
+			
 		 	rs.close();
 		 	st.close();
 		 	con.close();
