@@ -1,9 +1,9 @@
-
 <%@page import="java.util.List"%>
 <%@page import="com.jiwoo.web.entity.Notice"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
   
 <!DOCTYPE html>
 <html>
@@ -177,21 +177,24 @@
 						</tr>
 					</thead>
 					<tbody>
-						<%  //꺼내기
+						<%--<%  //꺼내기
 							List<Notice> list = (List<Notice>)request.getAttribute("list");
 							for(Notice n : list) {
 						
 							//저장소에 담기
 							pageContext.setAttribute("n",n);
-						%>
+						%> --%> 
+						<%-- 반복 할 때 마다 items에서 하나씩 꺼내온다. 변수 n에 담기--%>
+					<c:forEach var="n" items="${list}">
 					<tr>
 						<td>${n.id }</td>
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
 						<td>${n.writerid}</td>
 						<td>${n.regdate }</td>
 						<td>${n.hit}</td>
-					</tr>
-					<% } %>
+					 </tr> 
+					 </c:forEach>
+					<%-- <% } %>--%>
 					</tbody>
 				</table>
 			</div>
