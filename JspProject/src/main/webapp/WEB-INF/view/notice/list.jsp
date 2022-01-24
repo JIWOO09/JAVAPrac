@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-  
+  <!-- 접두사 c를 쓰는 이유 : JSP에게 알리기 위해, uri는 제공하는것을 의미, 식별을 위해 도메인 이름이 들어감 -->
 <!DOCTYPE html>
 <html>
 
@@ -184,8 +184,9 @@
 							//저장소에 담기
 							pageContext.setAttribute("n",n);
 						%> --%> 
+						
 						<%-- 반복 할 때 마다 items에서 하나씩 꺼내온다. 변수 n에 담기--%>
-					<c:forEach var="n" items="${list}">
+					<c:forEach var="n" items="${list}" >
 					<tr>
 						<td>${n.id }</td>
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
@@ -207,20 +208,37 @@
 			<div class="margin-top align-center pager">	
 		
 	<div>
-		
-		
-		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
-		
+	
+	<%--set : 임시 변수 태그      파라미터 값이 null이면 기본값 1 , null이 아니면 null빼고 모든값 --%>
+	<c:set var="page" value="${(param.p == null)?1:param.p }"/>
+	<c:set var="startNum" value="${page-(page-1)%5 }"/>
+								<%-- 현재페이지 - 1 나머지연산 5 -> 시작 페이지와의 간격
+									그 간격를 현재페이지에서 빼면 첫번째 페이지--%>
+	<c:set var="lastNum" value="23"/>
+		<c:if test="${startNum > 1}">
+			<a class="btn btn-prev" href="?p=${startNum-1}&t=&q=">이전</a>
+		</c:if>
+		<c:if test="${startNum <= 1}">
+			<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		</c:if>
 	</div>
+	
+	
+
 	<ul class="-list- center">
-		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
-				
+		<%--1씩 증감시키기 위해 변수설정 --%>
+		<c:forEach var="i" begin="0" end="4">
+			<li><a class="-text- orange bold" href="?p=${startNum+i}&t=&q=" >${startNum+i}</a></li>
+		</c:forEach>			
 	</ul>
 	<div>
-		
-		
+		<c:if test="${startNum+5 < lastNum} ">
+			<%--다음 페이지 버튼 활성화를 위해 i보다 1더 크게 설정 --%>
+			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next">다음</a>
+		</c:if>
+		<c:if test="${startNum+5 >= lastNum} ">
 			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-		
+		</c:if>
 	</div>
 	
 			</div>
