@@ -4,7 +4,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-  <!-- 접두사 c를 쓰는 이유 : JSP에게 알리기 위해, uri는 제공하는것을 의미, 식별을 위해 도메인 이름이 들어감 -->
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+  <!-- 접두사prefix를 쓰는 이유 : JSP에게 알리기 위해, uri는 제공하는것을 의미, 식별을 위해 도메인 이름이 들어감 -->
 <!DOCTYPE html>
 <html>
 
@@ -191,7 +192,8 @@
 						<td>${n.id }</td>
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
 						<td>${n.writerid}</td>
-						<td>${n.regdate }</td>
+						<!-- 날짜 포맷 지정하기 날짜는 M 분은 m -->
+						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.regdate }"/></td>
 						<td>${n.hit}</td>
 					 </tr> 
 					 </c:forEach>
@@ -223,8 +225,6 @@
 		</c:if>
 	</div>
 	
-	
-
 	<ul class="-list- center">
 		<%--1씩 증감시키기 위해 변수설정 --%>
 		<c:forEach var="i" begin="0" end="4">
@@ -234,7 +234,7 @@
 	<div>
 		<c:if test="${startNum+5 < lastNum} ">
 			<%--다음 페이지 버튼 활성화를 위해 i보다 1더 크게 설정 --%>
-			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next">다음</a>
+			<a class="btn btn-prev" href="?p=${startNum+5}&t=&q=">다음</a>
 		</c:if>
 		<c:if test="${startNum+5 >= lastNum} ">
 			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
