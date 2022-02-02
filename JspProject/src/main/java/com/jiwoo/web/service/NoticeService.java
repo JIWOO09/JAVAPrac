@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.jiwoo.web.entity.Notice;
+import com.jiwoo.web.entity.NoticeView;
 
 public class NoticeService {
 
@@ -20,29 +21,29 @@ public class NoticeService {
 	
 		//List컬랙션을 이용해 Notice를 반환한다
 	//공지사항 첫페이지
-	public List<Notice> getNoticeList() {
+	public List<NoticeView> getNoticeList() {
 		return getNoticeList("title", "", 1);
 	}						//field, query,기본 시작page
 	
 	//페이지 번호 눌렀을 때				페이지 인자 받기
-	public List<Notice> getNoticeList(int page) {
+	public List<NoticeView> getNoticeList(int page) {
 		return getNoticeList("title", "", page);
 							//field, query,page
 	}
 	
 	//메소드 이름이 같은 경우 중복되니까 -> 인자가 많은 메소드만 살려서 구현
 	//제목, 이름, 등으로 검색했을 때
-	public List<Notice> getNoticeList
+	public List<NoticeView> getNoticeList
 		(String field/*TITLE, WRITER_ID*/, String query/*A*/, int page) {
 		
 		//controller에 있던 코드 가져오기
 		//notice 객체가 여러개 필요하기 때문에 
-		List<Notice> list = new ArrayList<>();
+		List<NoticeView> list = new ArrayList<>();
 		
 		//SQL문장을 이걸 쓸것이다
 		String sql = "SELECT * FROM (" +
 				"	SELECT ROWNUM NUM, N. *" +		//TITLE	  //qeury패턴비교
-				"	FROM (SELECT * FROM NOTICE WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N"+
+				"	FROM (SELECT * FROM NOTICE_VIEW_ WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N"+
 				"	) " +
 				"	WHERE NUM BETWEEN ? AND ? ";
 				//1, 11, 21,31 ..->an = 1+(page-1)*10
@@ -77,17 +78,19 @@ public class NoticeService {
 						String writerid = rs.getString("WRITER_ID");
 						String hit = rs.getString("HIT");
 						String files = rs.getString("FILES");
-						String content = rs.getString("CONTENT");
+						//String content = rs.getString("CONTENT"); 뷰에서 지움
+						int cmtCount = rs.getInt("CMT_COUNT");
 						
 						//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
-						Notice notice = new Notice(
+						NoticeView notice = new NoticeView(
 											id,
 											title,
 											regdate,
 											writerid,
 											hit,
 											files,
-											content
+											//content,
+											cmtCount
 											);
 						list.add(notice);
 					

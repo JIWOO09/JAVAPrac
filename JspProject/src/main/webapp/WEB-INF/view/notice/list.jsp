@@ -190,8 +190,8 @@
 						<%-- 반복 할 때 마다 items에서 하나씩 꺼내온다. 변수 n에 담기--%>
 					<c:forEach var="n" items="${list}" >
 					<tr>
-						<td>${n.id }</td>
-						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
+						<td>${n.id }</td>																			 <!-- 댓글 수 -->
+						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a><span>[${n.cmtCount}]</span></td>
 						<td>${n.writerid}</td>
 						<!-- 날짜 포맷 지정하기 날짜는 M 분은 m -->
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.regdate }"/></td>

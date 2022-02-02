@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jiwoo.web.entity.Notice;
+import com.jiwoo.web.entity.NoticeView;
 import com.jiwoo.web.service.NoticeService;
 
 
@@ -53,7 +54,7 @@ public class NoticeListController extends HttpServlet {
 		
 		NoticeService service = new NoticeService();
 		//notice 객체가 여러개 필요하기 때문에 						//1이였던걸 수정
-		List<Notice> list = service. getNoticeList(field, query, page);
+		List<NoticeView> list = service. getNoticeList(field, query, page);
 		
 		//DB에 레코드 갯수가 몇개인지
 		int count = service.getNoticeCount();
