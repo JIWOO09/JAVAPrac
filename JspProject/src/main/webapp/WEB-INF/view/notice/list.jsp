@@ -5,6 +5,7 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix ="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <!-- 접두사prefix를 쓰는 이유 : JSP에게 알리기 위해, uri는 제공하는것을 의미, 식별을 위해 도메인 이름이 들어감 -->
 <!DOCTYPE html>
 <html>
@@ -155,11 +156,11 @@
 						<legend class="hidden">공지사항 검색 필드</legend>
 						<label class="hidden">검색분류</label>
 						<select name="f">
-							<option  value="title">제목</option>
-							<option  value="writerId">작성자</option>
+							<option  ${(param.f == "title")?"selected":"" } value="title">제목</option>
+							<option  ${(param.f == "writerid")?"selected":"" } value="writer_id">작성자</option>
 						</select> 
 						<label class="hidden">검색어</label>
-						<input type="text" name="q" value=""/>
+						<input type="text" name="q" value="${param.q}"/>
 						<input class="btn btn-search" type="submit" value="검색" />
 					</fieldset>
 				</form>
@@ -201,22 +202,23 @@
 					</tbody>
 				</table>
 			</div>
-			
+			<%--set : 임시 변수 태그      파라미터 값이 null이면 기본값 1 , null이 아니면 null빼고 모든값 --%>
+			<c:set var="page" value="${(param.p == null)?1:param.p }"/>
+			<c:set var="startNum" value="${page-(page-1)%5 }"/>
+								<%-- 현재페이지 - 1 나머지연산 5 -> 시작 페이지와의 간격
+									그 간격를 현재페이지에서 빼면 첫번째 페이지--%>
+			<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(count/10), '.')}"/> 
+							<!--  10.2 > 11로 올림 : Math.ceil(10.2) ->11.0으로 되기 때문에 구분자 .뒤에 0을 잘라야하는 함수를 써야함, Math.floor는 소수점 없애기-->	
 			<div class="indexer margin-top align-right">
-				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">1</span> / 1 pages</div>
+				<h3 class="hidden">현재 페이지</h3>		  <!-- null값, 빈문자열 방지  -->
+				<div><span class="text-orange text-strong">${(empty param.p)?1:param.p}</span> / ${lastNum } pages</div>
 			</div>
 
 			<div class="margin-top align-center pager">	
 		
 	<div>
 	
-	<%--set : 임시 변수 태그      파라미터 값이 null이면 기본값 1 , null이 아니면 null빼고 모든값 --%>
-	<c:set var="page" value="${(param.p == null)?1:param.p }"/>
-	<c:set var="startNum" value="${page-(page-1)%5 }"/>
-								<%-- 현재페이지 - 1 나머지연산 5 -> 시작 페이지와의 간격
-									그 간격를 현재페이지에서 빼면 첫번째 페이지--%>
-	<c:set var="lastNum" value="23"/>
+	
 		<c:if test="${startNum > 1}">
 			<a class="btn btn-prev" href="?p=${startNum-1}&t=&q=">이전</a>
 		</c:if>
@@ -228,15 +230,19 @@
 	<ul class="-list- center">
 		<%--1씩 증감시키기 위해 변수설정 --%>
 		<c:forEach var="i" begin="0" end="4">
-			<li><a class="-text- orange bold" href="?p=${startNum+i}&t=&q=" >${startNum+i}</a></li>
+		<!-- 게시물 없는 뒤 페이지들은 나오지 않게 하기 위한 조건 -->
+		<c:if test="${(startNum+i) <= lastNum }">
+								<!-- 클릭 한 숫자만 강조효과 EL에서는 홑따옴표-->
+			<li><a class="-text- ${(param.p==(startNum+i))?'orange':''}  bold" href="?p=${startNum+i}&f=${param.f}&q=${param.q}" >${startNum+i}</a></li>
+		</c:if>
 		</c:forEach>			
 	</ul>
 	<div>
-		<c:if test="${startNum+5 < lastNum} ">
+		<c:if test="${startNum+4 < lastNum} ">
 			<%--다음 페이지 버튼 활성화를 위해 i보다 1더 크게 설정 --%>
-			<a class="btn btn-prev" href="?p=${startNum+5}&t=&q=">다음</a>
+			<a href="?p=${startNum+5}&t=&q=" class="btn btn-next" >다음</a>
 		</c:if>
-		<c:if test="${startNum+5 >= lastNum} ">
+		<c:if test="${startNum+4 >= lastNum} ">
 			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
 		</c:if>
 	</div>

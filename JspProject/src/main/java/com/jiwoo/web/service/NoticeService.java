@@ -1,6 +1,7 @@
 package com.jiwoo.web.service;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,8 @@ public class NoticeService {
 	
 	//메소드 이름이 같은 경우 중복되니까 -> 인자가 많은 메소드만 살려서 구현
 	//제목, 이름, 등으로 검색했을 때
-	public List<Notice> getNoticeList(String field/*TITLE, WRITER_ID*/, String query/*A*/, int page) {
+	public List<Notice> getNoticeList
+		(String field/*TITLE, WRITER_ID*/, String query/*A*/, int page) {
 		
 		//controller에 있던 코드 가져오기
 		//notice 객체가 여러개 필요하기 때문에 
@@ -39,7 +41,7 @@ public class NoticeService {
 		
 		//SQL문장을 이걸 쓸것이다
 		String sql = "SELECT * FROM (" +
-				"	SELECT ROWNUM NUM, N. *" +		//TITLE	   //패턴비교
+				"	SELECT ROWNUM NUM, N. *" +		//TITLE	  //qeury패턴비교
 				"	FROM (SELECT * FROM NOTICE WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N"+
 				"	) " +
 				"	WHERE NUM BETWEEN ? AND ? ";
@@ -87,10 +89,8 @@ public class NoticeService {
 											files,
 											content
 											);
-						
-						//반복문 실행시 객체에 추가
 						list.add(notice);
-						
+					
 						}
 				    	rs.close();
 				    	st.close();
@@ -102,7 +102,8 @@ public class NoticeService {
 					e.printStackTrace();
 				}
 		
-		return null;
+				return list;
+		
 	}
 	
 	//현재 페이지 알려주는 숫자 1/5 page 이런식
@@ -139,8 +140,9 @@ public class NoticeService {
 			
 			ResultSet rs = st.executeQuery();
 
-			//목록이 아닌 집계 카운트값
-			count = rs.getInt("count");				
+			if(rs.next())
+				//목록이 아닌 집계 카운트값
+				count = rs.getInt("count");				
 			
 		    	rs.close();
 		    	st.close();
