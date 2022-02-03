@@ -30,7 +30,40 @@ public class NoticeService {
 	}
 	//글 등록					Notice 객체를 전달 받는다
 	public int insertNotice(Notice notice){
-		return 0;
+			int result = 0;
+											//id 여러개여서 in
+				String sql = "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB) VALUES(?,?,?,?)";
+				
+				String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
+				
+				try {
+					//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
+					Class.forName("oracle.jdbc.driver.OracleDriver");
+					//첫번째 로드 객체 생성
+					//메모리상에 드라이버가 올라감
+					Connection con = DriverManager.getConnection(url,"NEWJDBC","1234");
+					//두번째 연결 객체 생성
+					//연결 되면 객체 참조
+					//Statement st = con.createStatement();
+					//con으로 이어 받아 세번째 실행 객체 생성
+					//사용자로부터 요구 받은 쿼리 실행
+					PreparedStatement st = con.prepareStatement(sql);
+					st.setString(1,notice.getTitle());
+					st.setString(2,notice.getContent());
+					st.setString(3,notice.getWriterid());
+					st.setBoolean(4,notice.getPub());
+					//ResultSet rs = st.executeQuery();
+					result = st.executeUpdate();
+
+				    st.close();
+				    con.close();
+				        
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				return result;
 	}
 
 	//글 삭제
@@ -107,6 +140,7 @@ public class NoticeService {
 						String files = rs.getString("FILES");
 						//String content = rs.getString("CONTENT"); 뷰에서 지움
 						int cmtCount = rs.getInt("CMT_COUNT");
+						boolean pub = rs.getBoolean("PUB");
 						
 						//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
 						NoticeView notice = new NoticeView(
@@ -116,6 +150,7 @@ public class NoticeService {
 											writerid,
 											hit,
 											files,
+											pub,
 											//content,
 											cmtCount
 											);
@@ -221,6 +256,7 @@ public class NoticeService {
 				String hit = rs.getString("HIT");
 				String files = rs.getString("FILES");
 				String content = rs.getString("CONTENT");
+				boolean pub = rs.getBoolean("PUB");
 				
 				//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
 				notice = new Notice(
@@ -230,7 +266,8 @@ public class NoticeService {
 									writerid,
 									hit,
 									files,
-									content
+									content,
+									pub
 									);
 				
 				}
@@ -287,6 +324,7 @@ String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 				String hit = rs.getString("HIT");
 				String files = rs.getString("FILES");
 				String content = rs.getString("CONTENT");
+				boolean pub = rs.getBoolean("PUB");
 				
 				//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
 				notice = new Notice(
@@ -296,7 +334,8 @@ String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 									writerid,
 									hit,
 									files,
-									content
+									content,
+									pub
 									);
 				
 				}
@@ -341,25 +380,28 @@ String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 
 
 							
-			if(rs.next()) {
-				int nid = rs.getInt("ID");
-				String title = rs.getString("TITLE");
-				Date regdate = rs.getDate("REGDATE");
-				String writerid = rs.getString("WRITER_ID");
-				String hit = rs.getString("HIT");
-				String files = rs.getString("FILES");
-				String content = rs.getString("CONTENT");
-				
-				//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
-				notice = new Notice(
-									nid,
-									title,
-									regdate,
-									writerid,
-									hit,
-									files,
-									content
-									);
+			
+				if(rs.next()) {
+					int nid = rs.getInt("ID");
+					String title = rs.getString("TITLE");
+					Date regdate = rs.getDate("REGDATE");
+					String writerid = rs.getString("WRITER_ID");
+					String hit = rs.getString("HIT");
+					String files = rs.getString("FILES");
+					String content = rs.getString("CONTENT");
+					boolean pub = rs.getBoolean("PUB");
+					
+					//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
+					notice = new Notice(
+										nid,
+										title,
+										regdate,
+										writerid,
+										hit,
+										files,
+										content,
+										pub
+										);
 				
 				}
 		    	rs.close();

@@ -11,13 +11,23 @@ public class Notice {
 	private String hit;
 	private String files;
 	private String content;
+	private boolean pub;
 	
 	//파라미터가 없는 기본생성자
 	public Notice() {
 	}
 	
 	//생성자
-	public Notice(int id, String title, Date regdate, String writerid, String hit, String files, String content) {
+	
+
+	
+	public int getId() {
+		return id;
+	}
+
+	public Notice(int id, String title, Date regdate, String writerid, String hit, String files, String content,
+			boolean pub) {
+
 		this.id = id;
 		this.title = title;
 		this.regdate = regdate;
@@ -25,11 +35,7 @@ public class Notice {
 		this.hit = hit;
 		this.files = files;
 		this.content = content;
-	}
-
-	
-	public int getId() {
-		return id;
+		this.pub = pub;
 	}
 
 	public void setId(int id) {
@@ -84,15 +90,25 @@ public class Notice {
 		this.content = content;
 	}
 
+	
+	public boolean getPub() {
+		return pub;
+	}
+
+	public void setPub(boolean pub) {
+		this.pub = pub;
+	}
+
 	//값 출력하여 확인 가능
 	@Override
 	public String toString() {
 		return "Notice [id=" + id + ", title=" + title + ", regdate=" + regdate + ", writerid=" + writerid + ", hit="
-				+ hit + ", files=" + files + ", content=" + content + "]";
+				+ hit + ", files=" + files + ", content=" + content + ", pub=" + pub + "]";
 	}
-	
-	
 
-
+	
 	
 }
+	
+	
+

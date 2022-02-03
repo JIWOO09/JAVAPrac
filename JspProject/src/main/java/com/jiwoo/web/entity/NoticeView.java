@@ -15,8 +15,8 @@ public class NoticeView extends Notice {
 	}
 	public NoticeView() {
 	}
-	public NoticeView(int id, String title, Date regdate, String writerid, String hit, String files, int cmtCount) {
-		super(id, title, regdate, writerid, hit, files, "");
+	public NoticeView(int id, String title, Date regdate, String writerid, String hit, String files, boolean pub, int cmtCount) {
+		super(id, title, regdate, writerid, hit, files, "", pub);
 		this.cmtCount = cmtCount;
 	}
 
