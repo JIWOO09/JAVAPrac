@@ -19,6 +19,33 @@ public class NoticeService {
 	//함수메소드는 꼭 반환 타입, 아니면 void
 	//클래스는 캡슐화, 제공되는 서비스는 public
 	
+	//관리자가 쓸 수 있는 메소드 
+	//일괄 삭제 모든 아이디니까 배열에 담기
+	public int removeNoticeAll(int[] ids){
+		return 0;
+	}
+	//일괄 공개
+	public int pubNoticeAll(int[] ids){
+		return 0;
+	}
+	//글 등록					Notice 객체를 전달 받는다
+	public int insertNotice(Notice notice){
+		return 0;
+	}
+
+	//글 삭제
+	public int deleteNotice(int id){
+		return 0;
+	}
+	//글 수정저장
+	public int updateNotice(Notice notice){
+		return 0;
+	}
+	//최신 공지사항
+	List<Notice> getNoticeNewesList(){
+		return null;
+	}
+	
 		//List컬랙션을 이용해 Notice를 반환한다
 	//공지사항 첫페이지
 	public List<NoticeView> getNoticeList() {
@@ -346,6 +373,48 @@ String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 		}
 
 		return notice;
+	}
+
+	public int deleteNoticeAll(int[] ids) {
+
+		//몇개 삭제 했는지
+		int result = 0;
+		String params = "";
+				//ids 갯수만큼 반복
+		for(int i = 0; i<ids.length; i++) {
+			params += ids[i];
+			if(i < ids.length-1)//마지막엔 구분자 안들어감
+				params += ",";//구분자
+		}								//id 여러개여서 in
+		String sql = "SELETE NOTICE WHERE ID IN("+params+")";
+		
+		String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
+		
+		try {
+			//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//첫번째 로드 객체 생성
+			//메모리상에 드라이버가 올라감
+			Connection con = DriverManager.getConnection(url,"NEWJDBC","1234");
+			//두번째 연결 객체 생성
+			//연결 되면 객체 참조
+			Statement st = con.createStatement();
+			//con으로 이어 받아 세번째 실행 객체 생성
+			//사용자로부터 요구 받은 쿼리 실행
+			//PreparedStatement st = con.prepareStatement(sql);
+			
+			//ResultSet rs = st.executeQuery();
+			result = st.executeUpdate(sql);
+
+		    st.close();
+		    con.close();
+		        
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	

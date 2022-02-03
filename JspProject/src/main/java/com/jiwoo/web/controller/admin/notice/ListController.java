@@ -22,14 +22,46 @@ import com.jiwoo.web.entity.NoticeView;
 import com.jiwoo.web.service.NoticeService;
 
 
-@WebServlet("/admin/notice/list")
+@WebServlet("/admin/board/notice/list")
 public class ListController extends HttpServlet {
-
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//list.jsp에서 보내는 post값 받기
+		//키가 다 같고 값은 다르면 배열로
+		String[] openIds = request.getParameterValues("open-id");
+		String[] delIds = request.getParameterValues("del-id");
+		String cmd = request.getParameter("cmd");
+		
+		//클릭한 버튼에 따른 결과 다르게
+		switch(cmd) {
+		case "일괄공개" :
+			for(String openId : openIds)
+			System.out.printf("open id : %s\n", openId);
+			break;
+		case "일괄삭제" : 
+			//기능은 Service에 부탁
+			NoticeService service = new NoticeService();
+			//id가 정수형으로 되어있으니 String에서 정수형 배열로 바꾸기
+			int[] ids = new int[delIds.length];
+			for(int i = 0; i < delIds.length; i++)
+					ids[i] = Integer.parseInt(delIds[i]);
+			
+			//삭제 된 갯수 돌려받는
+			int result = service.deleteNoticeAll(ids);
+			break;
+		}
+		
+		//post 끝난 후 사용자 목록로 다시 돌아갈 수 있도록 
+		response.sendRedirect("list");
+	}
+	
+	//404 : url오류
+	//405 : 메소드 오류 (get, post)
+	//403 : 권한(보안) 오류
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		
-
-		
+	
 		//값이 NULL일때, 있는지 없는지 모를때 임시변수_에 담아놓기
 		//사용자 요청 받기
 		String field_ = request.getParameter("f");
