@@ -173,6 +173,11 @@
 						</thead>
 						<tbody>
 					<c:forEach var="n" items="${list}" >
+					<!-- 선택 된 글만 공개표시 -->
+						<c:set var="open" value=""/>
+						<c:if test="${n.pub}"> <!-- true면 체크 -->
+							<c:set var="open" value="checked"/>
+						</c:if>
 					<tr>
 						<td>${n.id }</td>																			 <!-- 댓글 수 -->
 						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a><span>[${n.cmtCount}]</span></td>
@@ -180,7 +185,8 @@
 						<!-- 날짜 포맷 지정하기 날짜는 M 분은 m -->
 						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.regdate }"/></td>
 						<td>${n.hit}</td>
-						<td><input type="checkbox" name="open-id" value="${n.id }"></td>
+						
+						<td><input type="checkbox" name="open-id" ${open } value="${n.id }"></td>
 						<td><input type="checkbox" name="del-id" value="${n.id }"></td>
 					 </tr> 
 					 </c:forEach>
@@ -201,9 +207,15 @@
 			</div>
 
 				<div class="text-align-right margin-top">
+				<c:set var="ids" value=""/>
+				<!-- id만 추출 -->
+					<c:forEach var="n" items="${list}">
+						<c:set var="ids" value="${ids} ${n.id}"/>
+					</c:forEach>
+					<input type="hidden" name="ids" value="${ids}">
 					<input type="submit" class="btn-text btn-default" name="cmd" value="일괄공개">
 					<input type="submit" class="btn-text btn-default" name="cmd" value="일괄삭제">
-					<a class="btn-text btn-default" href="reg.html">글쓰기</a>				
+					<a class="btn-text btn-default" href="reg">글쓰기</a>				
 				</div>
 		  </form>
 		

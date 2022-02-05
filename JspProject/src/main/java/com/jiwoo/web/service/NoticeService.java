@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +25,65 @@ public class NoticeService {
 	public int removeNoticeAll(int[] ids){
 		return 0;
 	}
-	//일괄 공개
-	public int pubNoticeAll(int[] ids){
-		return 0;
+	//일괄 공개 , 배열, 리스트 둘다 쓸 수 있게 제공
+	public int pubNoticeAll(int[] oids, int[] cids){
+		//문자열 배열 만들기
+		List<String> oidsList =new ArrayList<>();
+		for(int i = 0; i<oids.length; i++) 
+			oidsList.add(String.valueOf(oids[i]));
+		
+		List<String> cidsList =new ArrayList<>();
+		for(int i = 0; i<cids.length; i++) 
+			cidsList.add(String.valueOf(cids[i]));
+		
+		return pubNoticeAll(oidsList, cidsList);
+	}
+	public int pubNoticeAll(List<String> oids, List<String> cids){
+		
+		String oidsCSV = String.join(",", oids); //구분자와 함께 문자열 합친다.
+		String cidsCSV = String.join(",", cids);
+		
+		return pubNoticeAll(oidsCSV,cidsCSV);
+	}
+	public int pubNoticeAll(String oidsCSV, String cidsCSV){
+		
+		int result = 0;
+		String sqlOpen = String.format("UPDATE NOTICE SET PUB=1 WHERE ID IN (%s)", oidsCSV);
+		String sqlClose = String.format("UPDATE NOTICE SET PUB=0 WHERE ID IN (%s)", cidsCSV);
+		
+		//업데이트
+		String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
+		
+		try {
+			//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			//첫번째 로드 객체 생성
+			//메모리상에 드라이버가 올라감
+			Connection con = DriverManager.getConnection(url,"NEWJDBC","1234");
+			//두번째 연결 객체 생성
+			//연결 되면 객체 참조
+			Statement stOpen = con.createStatement();
+			//con으로 이어 받아 세번째 실행 객체 생성
+			//사용자로부터 요구 받은 쿼리 실행
+			//PreparedStatement st = con.prepareStatement(sqlOpen);
+			
+			//ResultSet rs = st.executeQuery();
+			result += stOpen.executeUpdate(sqlOpen);
+
+			
+			Statement stClose = con.createStatement();
+			result += stClose.executeUpdate(sqlClose);
+
+
+			stOpen.close();
+			stClose.close();
+		        
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	//글 등록					Notice 객체를 전달 받는다
 	public int insertNotice(Notice notice){
@@ -103,10 +160,85 @@ public class NoticeService {
 		
 		//SQL문장을 이걸 쓸것이다
 		String sql = "SELECT * FROM (" +
-				"	SELECT ROWNUM NUM, N. *" +		//TITLE	  //qeury패턴비교
+				"	SELECT ROWNUM NUM, N.*" +		//TITLE	  //qeury패턴비교
 				"	FROM (SELECT * FROM NOTICE_VIEW_ WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N"+
 				"	) " +
 				"	WHERE NUM BETWEEN ? AND ? ";
+				//1, 11, 21,31 ..->an = 1+(page-1)*10
+				//10, 20, 30..->page*10
+		
+				String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
+				
+				try {
+					//총 4개의 객체를 생성해야한다(new로 객체 생성하지 않음) -> 거의 바뀌지 않음 
+					Class.forName("oracle.jdbc.driver.OracleDriver");
+					//첫번째 로드 객체 생성
+					//메모리상에 드라이버가 올라감
+					Connection con = DriverManager.getConnection(url,"NEWJDBC","1234");
+					//두번째 연결 객체 생성
+					//연결 되면 객체 참조
+					//Statement st = con.createStatement();
+					//con으로 이어 받아 세번째 실행 객체 생성
+					//사용자로부터 요구 받은 쿼리 실행
+					PreparedStatement st = con.prepareStatement(sql);
+					st.setString(1, "%"+query+"%");
+					st.setInt(2, 1+(page-1)*10);
+					st.setInt(3, page*10);
+					
+					ResultSet rs = st.executeQuery();
+
+
+									
+					while(rs.next()) {
+						int id = rs.getInt("ID");
+						String title = rs.getString("TITLE");
+						Date regdate = rs.getDate("REGDATE");
+						String writerid = rs.getString("WRITER_ID");
+						String hit = rs.getString("HIT");
+						String files = rs.getString("FILES");
+						//String content = rs.getString("CONTENT"); 뷰에서 지움
+						int cmtCount = rs.getInt("CMT_COUNT");
+						boolean pub = rs.getBoolean("PUB");
+						
+						//notice객체그릇에 데이터(속성들)담기, 생성자와 순서 동일하게
+						NoticeView notice = new NoticeView(
+											id,
+											title,
+											regdate,
+											writerid,
+											hit,
+											files,
+											pub,
+											//content,
+											cmtCount
+											);
+						list.add(notice);
+					
+						}
+				    	rs.close();
+				    	st.close();
+				        con.close();
+				        
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		
+				return list;
+		
+	}
+	//사용자는 공개 된 글만 보이게
+	public List<NoticeView> getNoticePubList(String field, String query, int page) {
+		
+		List<NoticeView> list = new ArrayList<>();
+		
+		//SQL문장을 이걸 쓸것이다
+		String sql = "SELECT * FROM (" +
+				"	SELECT ROWNUM NUM, N.*" +		//TITLE	  //qeury패턴비교
+				"	FROM (SELECT * FROM NOTICE_VIEW_ WHERE "+field+" LIKE ? ORDER BY REGDATE DESC) N"+
+				"	) " +
+				"	WHERE PUB=1 AND NUM BETWEEN ? AND ? "; //공개(1)만 출력하기
 				//1, 11, 21,31 ..->an = 1+(page-1)*10
 				//10, 20, 30..->page*10
 		
@@ -459,6 +591,7 @@ String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 		}
 		return result;
 	}
+	
 	
 	
 }
