@@ -53,10 +53,11 @@ public class RegController extends HttpServlet {
 				
 		
 		for(Part p : parts) {
-			if(p.getName().equals("file")) continue; //파일이 아니면 빠져나감
-		
+			if(!p.getName().equals("file")) continue; //파일이 아니면 빠져나감
+			if(p.getSize() == 0) continue; //파일이 없는 경우
+			
 			//Part는 자료형으로 변수선언
-			//Part filePart = request.getPart("file"); -> 단일
+			//Part filePart = request.getPart("file"); //> 단일
 			Part filePart = p; //-> 다중
 			//파일명 얻기
 			String fileName = filePart.getSubmittedFileName();	
@@ -70,7 +71,15 @@ public class RegController extends HttpServlet {
 			//상대경로를 절대경로로 바꿔주는 함수가 RealPath
 			String realPath = request.getServletContext().getRealPath("/upload");
 			System.out.println(realPath);
-					
+			
+			//realPath의 존재여부, 없다면 만든다.
+			File path = new File(realPath);
+			if(!path.exists()); 
+			//boolean으로 반환, path가 존재하지 않는다면, 만들수있다.
+				path.mkdirs(); //파일 저장 시 디렉토리를 생성하는 함수
+								//mkdirs : 상위 디렉토리까지 같이 생성
+								//mkdir : 상위 디렉토리가 없으면 생성 불가
+								
 			
 			//realPath을 통해 출력 파일경로 + 자바 제공 경로 구분자 + 파일명
 			String filePath = realPath + File.separator + fileName;
@@ -83,20 +92,20 @@ public class RegController extends HttpServlet {
 			
 			//여러개 읽기 위해 반복문, for는 횟수 정해짐, 특정을 찾을 때 까지 while
 			byte[] buf = new byte[1024];
-				//연산자 != 보다 =이 먼저 될 수 있다 괄호로 묶기
-							
+					//연산자 != 보다 =이 먼저 될 수 있다 괄호로 묶기			
 			int size = 0;   //buf : 여러개 byte
-			while((size = fis.read(buf))!= -1) //-1이 아니라면 계속 반복
+			while((size = fis.read())!= -1) //-1이 아니라면 계속 반복
 				fos.write(buf, 0, size);//0부터 size만큼
 			
 				fos.close();
 				fis.close();
-				
-			
-		}		
+				}	
+		
+		
 		//마지막은 구분자 없게, 글자 길이에서 -1
 		builder.delete(builder.length()-1, builder.length());//인덱스로 세기
 			
+		
 		boolean pub = false; //기본값
 		
 		if(isOpen != null)
@@ -107,7 +116,8 @@ public class RegController extends HttpServlet {
 			notice.setContent(content);
 			notice.setPub(pub);
 			notice.setWriterid("new1");
-			notice.setWriterid(builder.toString());
+			//notice.setWriterid(builder.toString());
+			notice.setFiles(builder.toString());
 			
 			NoticeService service = new NoticeService();
 			int result = service.insertNotice(notice);

@@ -174,14 +174,14 @@
                             <tr>
                                 <th>첨부파일</th>
                                 <td colspan="3">
-                                					<c:forTokens var ="fileName" items="${n.files}" delims=",">
+                                	<c:forTokens var ="fileName" items="${n.files}" delims=",">
 										<!-- 조건달아서 함수 -->
 																					
 											<c:set var="style" value=""/>
 										<c:if test="${fn:endsWith(fileName, '.zip') }">
 											<c:set var="style" value="font-weight: bold; color: red;"/>
 										</c:if>
-										<a href="${fileName}" style="${style}">${fn:toUpperCase(fileName)}</a>
+										<a href="/upload/${fileName}" style="${style}">${fn:toUpperCase(fileName)}</a>
 
 									</c:forTokens>
                                 </td>
