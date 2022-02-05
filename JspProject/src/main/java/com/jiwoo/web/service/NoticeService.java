@@ -32,7 +32,7 @@ public class NoticeService {
 	public int insertNotice(Notice notice){
 			int result = 0;
 											//id 여러개여서 in
-				String sql = "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB) VALUES(?,?,?,?)";
+				String sql = "INSERT INTO NOTICE (TITLE, CONTENT, WRITER_ID, PUB, FILES) VALUES(?,?,?,?,?)";
 				
 				String url ="jdbc:oracle:thin:@localhost:1521/xepdb1";
 				
@@ -52,6 +52,7 @@ public class NoticeService {
 					st.setString(2,notice.getContent());
 					st.setString(3,notice.getWriterid());
 					st.setBoolean(4,notice.getPub());
+					st.setString(5,notice.getFiles());
 					//ResultSet rs = st.executeQuery();
 					result = st.executeUpdate();
 
