@@ -13,8 +13,8 @@
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
-	<bean id="exam1" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
-	<bean id="exam2" class="spring.di.entity.NewlecExam" p:kor="20" p:eng="40"/>
+	<!--  <bean id="exam1" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+	<bean id="exam2" class="spring.di.entity.NewlecExam" p:kor="20" p:eng="40"/>-->
 	
 	<!--  <bean id="exam" class="spring.di.entity.NewleckExam">
 		<constructor-arg name="kor" value="10" />
