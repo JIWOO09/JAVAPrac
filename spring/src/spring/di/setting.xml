@@ -7,6 +7,10 @@
 	<!-- bean : 생성할 객체를 지시 -->
 	<bean id="exam" class="spring.di.entity.NewleckExam">
 		<property name="kor" value="10"></property>
+		<property name="eng" value="10"></property>
+		<property name="math" value="10"></property>
+		<property name="com" value="10"></property>
+		
 	</bean>
 	
 	<!-- ExamConsole console = new GridExamConsole(exam); -->
