@@ -2,11 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
-	<bean id="exam" class="spring.di.entity.NewleckExam" p:kor="10" p:eng="10"/>
+	<bean id="exam" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
 	<!--  <bean id="exam" class="spring.di.entity.NewleckExam">
 		<constructor-arg name="kor" value="10" />
 		<constructor-arg name="eng" value="20" />
@@ -20,7 +22,19 @@
 	<!-- property : 결합 셋팅하기 -->
 		<property name="exam" ref="exam"></property>
 	</bean>
+		<util:list id="exams" list-class="java.util.ArrayList">
+			<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1"/>
+			<ref bean="exam"/>
+		</util:list>
 	
 	
+	<!-- <bean id="exams" class="java.util.ArrayList" >
+		<constructor-arg>
+			<list>
+				<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1"/>
+				<ref bean="exam"/>
+			</list>
+		</constructor-arg>
+	</bean> -->
 	
 </beans>
