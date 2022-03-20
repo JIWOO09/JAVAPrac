@@ -13,7 +13,9 @@
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
-	<bean id="exam" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+	<bean id="exam1" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+	<bean id="exam2" class="spring.di.entity.NewlecExam" p:kor="20" p:eng="40"/>
+	
 	<!--  <bean id="exam" class="spring.di.entity.NewleckExam">
 		<constructor-arg name="kor" value="10" />
 		<constructor-arg name="eng" value="20" />
@@ -27,12 +29,6 @@
 		<!-- property : 결합 셋팅하기 -->
 		<!--<property name="exam" ref="exam"></property>-->
 	</bean>
-	
-	
-	<util:list id="exams" list-class="java.util.ArrayList">
-		<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1"/>
-		<ref bean="exam"/>
-	</util:list>
 	
 	
 	<!-- <bean id="exams" class="java.util.ArrayList" >
