@@ -7,8 +7,18 @@ public class NewleckExam implements Exam {
 	private int math;
 	private int com;
 	
+	public NewleckExam() {
+	}
 	
-	
+	public NewleckExam(int kor, int eng, int math, int com) {
+		super();
+		this.kor = kor;
+		this.eng = eng;
+		this.math = math;
+		this.com = com;
+	}
+
+
 	public int getKor() {
 		return kor;
 	}
@@ -50,5 +60,12 @@ public class NewleckExam implements Exam {
 	public float avg() {
 		return total() / 4.0f; //소수점 반환
 	}
+
+	@Override
+	public String toString() {
+		return "NewleckExam [kor=" + kor + ", eng=" + eng + ", math=" + math + ", com=" + com + "]";
+	}
+	
+	
 
 }

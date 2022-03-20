@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
-	<bean id="exam" class="spring.di.entity.NewleckExam">
-		<property name="kor" value="10"></property>
-		<property name="eng" value="10"></property>
-		<property name="math" value="10"></property>
-		<property name="com" value="10"></property>
-		
-	</bean>
+	<bean id="exam" class="spring.di.entity.NewleckExam" p:kor="10" p:eng="10"/>
+	<!--  <bean id="exam" class="spring.di.entity.NewleckExam">
+		<constructor-arg name="kor" value="10" />
+		<constructor-arg name="eng" value="20" />
+		<constructor-arg name="math" value="30" />
+		<constructor-arg name="com" value="40" />
+	</bean>-->
 	
 	<!-- ExamConsole console = new GridExamConsole(exam); -->
 	<bean id="console" class="spring.di.ui.GridExamConsole">
