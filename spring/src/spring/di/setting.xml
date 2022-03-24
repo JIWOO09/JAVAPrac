@@ -9,7 +9,8 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 	
 		
-	<context:annotation-config/>
+	<!-- 패키지 찾아서 스캔해봐! -->
+	<context:component-scan base-package="package spring.di.ui, spring.di.entity;"></context:component-scan>
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
@@ -23,12 +24,12 @@
 		<constructor-arg name="com" value="40" />
 	</bean>-->
 	
-	<!-- ExamConsole console = new GridExamConsole(exam); -->
+	<!-- ExamConsole console = new GridExamConsole(exam); 
 	<bean id="console" class="spring.di.ui.InlineExamConsole">
-		<!-- console.setExam(exam); -->
-		<!-- property : 결합 셋팅하기 -->
-		<!--<property name="exam" ref="exam"></property>-->
-	</bean>
+		 console.setExam(exam); 
+		 property : 결합 셋팅하기 
+		<<property name="exam" ref="exam"></property>
+	</bean>-->
 	
 	
 	<!-- <bean id="exams" class="java.util.ArrayList" >
