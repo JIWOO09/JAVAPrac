@@ -1,9 +1,11 @@
 package spring.di;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import spring.di.entity.Exam;
@@ -25,9 +27,13 @@ public class Program {
 		console.setExam(exam);
 		*/
 		
-		//모든 구성요소의 제어 작업을 담당한다.
+		//모든 구성요소의 제어 작업을 담당한다. : XML을 쓸것이다.
+		//ApplicationContext context =
+				//new ClassPathXmlApplicationContext("spring/di/setting.xml");
+		
+		//모든 구성요소의 제어 작업을 담당한다. : 어노테이션을 쓸것이다.
 		ApplicationContext context =
-				new ClassPathXmlApplicationContext("spring/di/setting.xml");
+				new AnnotationConfigApplicationContext(NewlecDIConfig.class);
 		
 		//Exam exam = context.getBean(Exam.class);
 		//System.out.println(exam.toString());
