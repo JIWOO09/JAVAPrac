@@ -12,16 +12,35 @@
 	
 	<!-- Exam exam = new NewleckExam(); -->
 	<!-- bean : 생성할 객체를 지시 -->
-	<bean id="exam" class="spring.aop.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
+	<bean id="target" class="spring.aop.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
 	<bean id="LogAroundAdvice" class="spring.aop.advice.LogAroundAdvice"/>
+	<bean id="LogBeforeAdvice" class="spring.aop.advice.LogBeforedAdvice"/>
+	<bean id="LogAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice"/>
+	<bean id="LogAfterThrowingAdvice" class="spring.aop.advice.LogAfterThrowingAdvice"/>
+	
+	<!-- 포인트 컷 설정 -->
+	<bean id="classicPointCut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<!-- 토탈만 위빙(뜨개질) -->
+		<property name="mappedName" value="total"></property>
+	</bean>
+	<!-- 포인트컷과 아래 value를 연결해준다. -->
+	<bean id="classicBeforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="LogBeforeAdvice"/>
+		<property name="pointcut" ref="classicPointCut"/>
+	</bean>
 	
 	<!-- proxy 객체 만들기 -->
-	<!--  <bean id="proxy"  class="org.springframework.aop.framework.ProxyFactoryBean">
+	<bean id="exam"  class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="target"/>
 		<property name="interceptorNames">
 			<list>
 				<value>LogAroundAdvice</value>
+				<value>classicBeforeAdvisor</value>
+				<value>LogAfterReturningAdvice</value>
+				<value>LogAfterThrowingAdvice</value>
 			</list>
 		</property>
-		</bean>-->
+		</bean>
+		
+		
 </beans>
