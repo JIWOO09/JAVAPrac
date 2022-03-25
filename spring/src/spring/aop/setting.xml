@@ -18,17 +18,22 @@
 	<bean id="LogAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice"/>
 	<bean id="LogAfterThrowingAdvice" class="spring.aop.advice.LogAfterThrowingAdvice"/>
 	
-	<!-- 포인트 컷 설정 -->
+	<!--  포인트 컷 설정 
 	<bean id="classicPointCut" class="org.springframework.aop.support.NameMatchMethodPointcut">
-		<!-- 토탈만 위빙(뜨개질) -->
+		토탈만 위빙(뜨개질)
 		<property name="mappedName" value="total"></property>
 	</bean>
-	<!-- 포인트컷과 아래 value를 연결해준다. -->
+	포인트컷과 아래 value를 연결해준다.
 	<bean id="classicBeforeAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
 		<property name="advice" ref="LogBeforeAdvice"/>
 		<property name="pointcut" ref="classicPointCut"/>
-	</bean>
+	</bean> -->
 	
+	<!-- 위 2개를 합친 간소화 버전 -->
+	<bean id="classicBeforeAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<property name="advice" ref="LogBeforeAdvice"/>
+		<property name="mappedName" value="total"/>
+	</bean>
 	<!-- proxy 객체 만들기 -->
 	<bean id="exam"  class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="target" ref="target"/>
