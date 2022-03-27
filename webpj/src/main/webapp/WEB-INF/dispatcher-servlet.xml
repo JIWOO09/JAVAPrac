@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 스프링이 사용할 수 있는 설정들을 작성한다. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- 스피링은 빈 설정을 통해서 클래스를 설정하면 객체화 하여 ioc컨테이너에 담는다. 꺼내쓰는건 id로 -->
+    <bean id="/index" class="com.newlecture.web.controller.IndexController">  
+        <!-- collaborators and configuration for this bean go here -->
+    </bean>
+</beans>
