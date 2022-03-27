@@ -6,7 +6,11 @@
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
 <!-- 스피링은 빈 설정을 통해서 클래스를 설정하면 객체화 하여 ioc컨테이너에 담는다. 꺼내쓰는건 id로 -->
-    <bean id="/index" class="com.newlecture.web.controller.IndexController">  
-        <!-- collaborators and configuration for this bean go here -->
-    </bean>
+    <bean id="/index" class="com.newlecture.web.controller.IndexController"/>
+    
+ <!-- ViewResolver 설정 -->
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+  	<property name="prefix" value="/WEB-INF/view/"></property>
+  	<property name="suffix" value=".jsp"></property>
+  </bean>
 </beans>
